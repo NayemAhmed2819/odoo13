@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="report_meeting_detail" model="ir.actions.report">
+        <field name="name">Meeting Details</field>
+        <field name="model">meeting.request</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">meeting_minutes.report_meeting_details</field>
+        <field name="report_file">meeting_minutes.report_meeting_details</field>
+        <field name="binding_model_id" ref="model_meeting_request"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="action_report_meetings_new" model="ir.actions.report">
+        <field name="name">Print Meetings</field>
+        <field name="model">meetings.report.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">meeting_minutes.meetings_report_from_wizard</field>
+        <field name="report_file">meeting_minutes.meetings_report_from_wizard</field>
+        <field name="binding_model_id" ref="meeting_minutes.model_meetings_report_wizard"/>
+        <field name="binding_type">report</field>
+    </record>
+
+</odoo>

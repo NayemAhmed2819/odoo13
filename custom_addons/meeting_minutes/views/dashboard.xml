@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="act_room_bookings" model="ir.actions.act_window">
+        <field name="name">Meeting Room Bookings</field>
+        <field name="res_model">meeting.request</field>
+        <field name="view_mode">graph</field>
+        <field name="view_id" ref="meeting_minutes.view_meeting_graph"/>
+    </record>
+
+    <record id="act_room_list" model="ir.actions.act_window">
+        <field name="name">Meeting Rooms</field>
+        <field name="res_model">meeting.room</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="act_book_meetings" model="ir.actions.act_window">
+        <field name="name">Book Meetings</field>
+        <field name="res_model">meeting.request</field>
+        <field name="view_mode">calendar</field>
+        <field name="view_id" ref="meeting_minutes.view_meeting_calendar"/>
+    </record>
+
+    <record id="dashboard_form_view" model="ir.ui.view">
+        <field name="name">Dashboard Form</field>
+        <field name="model">board.board</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Dashboard">
+                <board style="1-2">
+                    <column>
+                        <action string="Meeting Room Bookings"
+                                name="%(meeting_minutes.act_room_bookings)d"/>
+                        <action string="Meeting Rooms"
+                                name="%(meeting_minutes.act_room_list)d"/>
+                    </column>
+                    <column>
+                        <action string="Book Meetings"
+                                name="%(act_book_meetings)d"/>
+                    </column>
+                </board>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_meeting_dashboard" model="ir.actions.act_window">
+        <field name="name">Dashboard</field>
+        <field name="res_model">board.board</field>
+        <field name="view_mode">form</field>
+        <field name="usage">menu</field>
+        <field name="view_id" ref="dashboard_form_view" />
+    </record>
+
+    <menuitem id="menu_dashboard"
+              name="Dashboard"
+              action="action_meeting_dashboard"
+              parent="menu_meeting_root"
+              sequence="0"/>
+
+</odoo>

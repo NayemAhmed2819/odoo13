@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="meetings_report_from_wizard">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <div class="oe_structure"/>
+                    <div class="text-center">
+                        <h2 style="font-size: 26px; font-family: 'Arial', sans-serif; color: gray; font-weight: bold; font-style: normal;">
+                            MEETING MINUTES
+                        </h2>
+                        <br/>
+                    </div>
+                    <div>
+                        <div style="margin-bottom: 10px;">
+                            <span style="font-weight: bold; font-size: 16px;">Venue:</span>
+                            <span style="font-size: 16px;">
+                                <t t-if="form.get('venue')">
+                                    <t t-esc="form['venue'][1]"/>
+                                </t>
+                            </span>
+                        </div>
+                        <div style="margin-bottom: 10px;">
+                            <span style="font-weight: bold; font-size: 16px;">Date From:</span>
+                            <span style="font-size: 16px;">
+                                <t t-if="form.get('date_from')">
+                                    <t t-esc="form['date_from']"/>
+                                </t>
+                            </span>
+                        </div>
+                        <div>
+                            <span style="font-weight: bold; font-size: 16px;">Date To:</span>
+                            <span style="font-size: 16px;">
+                                <t t-if="form.get('date_to')">
+                                    <t t-esc="form['date_to']"/>
+                                </t>
+                            </span>
+                        </div>
+                    </div>
+                    <br/>
+                    <table class="table table-bordered mt32">
+                        <thead>
+                            <tr>
+                                <th name="th_sl_no" class="text-left">
+                                    <span>SL No.</span>
+                                </th>
+                                <th name="th_age" class="text-left">
+                                    <span>Name</span>
+                                </th>
+                                <th name="th_age" class="text-left">
+                                    <span>Start Time</span>
+                                </th>
+                                <th name="th_age" class="text-left">
+                                    <span>End Time</span>
+                                </th>
+                                <th name="th_age" class="text-left">
+                                    <span>Coordinator</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <!--                        <t t-set="appointment_count" t-value="0"/>-->
+                        <t t-foreach="meetings" t-as="line">
+                            <!--                            <t t-set="appointment_count" t-value="appointment_count+1"/>-->
+                            <tr>
+                                <td>
+                                    <span t-esc="line_index + 1"/>
+                                </td>
+                                <td>
+                                    <span t-esc="line['title']"/>
+                                </td>
+                                <td>
+                                    <span t-esc="line['start_datetime']"/>
+                                </td>
+                                <td>
+                                    <span t-esc="line['end_datetime']"/>
+                                </td>
+                                <td>
+                                    <span t-esc="line['coordinator'][1]"/>
+                                </td>
+                            </tr>
+                        </t>
+                        <t t-if="form.get('venue')">
+                            <tr>
+                                <td>
+                                    <strong>Total Appointment(s):</strong>
+                                </td>
+                                <td colspan="4">
+                                    <t t-esc="len(meetings)"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+
+</odoo>

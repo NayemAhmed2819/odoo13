@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <template id="report_meeting_details">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <div class="oe_structure"/>
+                    <div class="text-center">
+                        <h2 style="font-size: 26px; font-family: 'Arial', sans-serif; color: gray; font-weight: bold; font-style: normal;">
+                            MEETING MINUTES
+                        </h2>
+                    </div>
+                    <table class="table table-condensed">
+                        <t t-foreach="docs" t-as="o">
+                            <thead>
+                                <tr>
+                                    <th style="width: 23%;">Title:</th>
+                                    <th>
+                                        <t t-esc="o.title"/>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <thead>
+                                <tr>
+                                    <th>Agenda:</th>
+                                    <td>
+                                        <t t-esc="o.description"/>
+                                    </td>
+                                </tr>
+                            </thead>
+                            <thead>
+                                <tr>
+                                    <th>Coordinator:</th>
+                                    <td>
+                                        <t t-esc="o.coordinator.name"/>
+                                    </td>
+                                </tr>
+                            </thead>
+                            <thead>
+                                <tr>
+                                    <th style="vertical-align: top">Participants:</th>
+                                    <td>
+                                        <!-- Loop through participants and display names -->
+                                        <t t-foreach="o.participants" t-as="participant">
+                                            <span>
+                                                <t t-esc="participant.name"/>
+                                            </span>
+                                            <t t-if="not participant == o.participants[-1]">,</t>
+                                        </t>
+                                    </td>
+                                </tr>
+                            </thead>
+                            <thead>
+                                <tr>
+                                    <th>Start Time and Date:</th>
+                                    <td>
+                                        <t t-if="o.start_datetime"
+                                           t-esc="o.start_datetime.strftime('(%H:%M:%S) %d-%m-%Y')"/>
+                                    </td>
+                                </tr>
+                            </thead>
+                            <thead>
+                                <tr>
+                                    <th>End Time and Date:</th>
+                                    <td>
+                                        <t t-if="o.end_datetime"
+                                           t-esc="o.end_datetime.strftime('(%H:%M:%S) %d-%m-%Y')"/>
+                                    </td>
+                                </tr>
+                            </thead>
+                            <thead>
+                                <tr>
+                                    <th>Duration:</th>
+                                    <td>
+                                        <t t-esc="o.total_hours and ('%.2f' % o.total_hours) or ''"/>
+                                        Hours
+                                    </td>
+                                </tr>
+                            </thead>
+                            <thead>
+                                <tr>
+                                    <th>Venue:</th>
+                                    <td>
+                                        <t t-esc="o.venue.room_name"/>
+                                        <t t-if="o.venue.room_location">-
+                                            <t t-esc="o.venue.room_location"/>
+                                        </t>
+                                    </td>
+                                </tr>
+                            </thead>
+                            <thead>
+                                <tr>
+                                    <th>Prepared By:</th>
+                                    <td>
+                                        <t t-esc="o.prepared_by"/>
+                                    </td>
+                                </tr>
+                            </thead>
+                            <thead>
+                                <tr>
+                                    <th style="vertical-align: top; text-align: center;" colspan="2">Discussion and
+                                        Decision
+                                    </th>
+                                </tr>
+                            </thead>
+                            <thead>
+                                <tr>
+                                    <td colspan="2">
+                                        <div style="width: 100%; padding: 5px; min-height: 50px;">
+                                            <div style="margin: 5px;">
+                                                <t t-raw="o.discussion"/>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </thead>
+                            <thead>
+                                <tr>
+                                    <th style="vertical-align: top; text-align: center;" colspan="2">Agreed Decision for
+                                        Next Step
+                                    </th>
+                                </tr>
+                            </thead>
+                            <thead>
+                                <tr>
+                                    <td colspan="2">
+                                        <div style="width: 100%; padding: 5px; min-height: 50px;">
+                                            <div style="margin: 5px;">
+                                                <t t-raw="o.decision"/>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </thead>
+                        </t>
+                    </table>
+                </div>
+                <!-- Footer -->
+                <div class="text-center">
+                    <p>© 2023, All Rights Reserved By Unisoft Systems Limited | Developed By Md. Nayem Ahmed.</p>
+                </div>
+            </t>
+        </t>
+    </template>
+
+</odoo>

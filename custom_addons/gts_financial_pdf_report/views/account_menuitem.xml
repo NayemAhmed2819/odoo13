@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <menuitem id="menu_finance_legal_statement" name="PDF Reports"
+                  parent="account.menu_finance_reports" groups="account.group_account_manager"/>
+
+        <menuitem id="menu_financial_reports_menu_config" name="Financial Reports"
+                  parent="account.menu_finance_configuration" sequence="20"/>
+
+        <menuitem id="menu_account_financial_reports_tree" name="Account Reports"
+                  parent="menu_financial_reports_menu_config" sequence="1"
+                  action="action_account_financial_report_tree"/>
+
+    </data>
+</odoo>
+

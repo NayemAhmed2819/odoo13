@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access.meeting.room,access_meeting_room,meeting_minutes.model_meeting_room,base.group_user,1,1,1,1
+access.approval.config,access_approval_config,meeting_minutes.model_approval_config,base.group_user,1,1,1,1
+access.meeting.request,access_meeting_request,meeting_minutes.model_meeting_request,base.group_user,1,1,1,1
+access.meetings.report.wizard,access_meetings_report_wizard,meeting_minutes.model_meetings_report_wizard,base.group_user,1,1,1,1

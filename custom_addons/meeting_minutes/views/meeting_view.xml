@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_meeting_calendar" model="ir.ui.view">
+        <field name="name">meeting.request.calendar</field>
+        <field name="model">meeting.request</field>
+        <field name="arch" type="xml">
+            <calendar string="Meeting Request" date_start="start_datetime" mode="month"
+                      date_delay="total_hours" color="venue" quick_add="False">
+                <field name="ref"/>
+                <field name="state" invisible="1" filters="1"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="view_meeting_graph" model="ir.ui.view">
+        <field name="name">meeting.request.graph</field>
+        <field name="model">meeting.request</field>
+        <field name="arch" type="xml">
+            <graph string="Meetings Graph" type="pie">
+                <field name="venue"/>
+                <field name="venue" type="count"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_meeting_tree" model="ir.ui.view">
+        <field name="name">meeting.tree</field>
+        <field name="model">meeting.request</field>
+        <field name="arch" type="xml">
+            <tree default_order="id desc"
+                  decoration-success="state=='done'"
+                  decoration-info="state=='approved'"
+                  decoration-warning="state=='pending_approval' or state=='drafted'"
+                  decoration-danger="state=='rejected'">
+                <field name="ref"/>
+                <field name="title"/>
+                <field name="start_datetime"/>
+                <field name="end_datetime"/>
+                <field name="coordinator"/>
+                <field name="venue"/>
+                <field name="prepared_by"/>
+                <field name="show_button" invisible="1"/>
+                <button name="action_approve" class="fa fa-check btn-success" context="{'bypass_check': True}"
+                        attrs="{'invisible': ['|','|','|','|',('state', '=', 'drafted'),('state', '=', 'approved'),('state', '=', 'rejected'),('state', '=', 'done'),('show_button', '=', False)]}"
+                        title="Approve Request" type="object"/>
+
+                <button name="action_rejected" class="fa fa-times btn-danger" context="{'bypass_check': True}"
+                        attrs="{'invisible': ['|','|','|','|',('state', '=', 'drafted'),('state', '=', 'approved'),('state', '=', 'rejected'),('state', '=', 'done'),('show_button', '=', False)]}"
+                        title="Reject Request" type="object"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_meeting_form" model="ir.ui.view">
+        <field name="name">meeting.form</field>
+        <field name="model">meeting.request</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_submit" class="oe_highlight" context="{'bypass_check': True}"
+                            string="Submit Meeting Minutes" type="object" states="drafted"/>
+
+                    <button name="action_submission_cancel" context="{'bypass_check': True}"
+                            string="Cancel" type="object" states="pending_approval"/>
+
+                    <button name="action_approve" class="fa fa-check btn-success" context="{'bypass_check': True}"
+                            attrs="{'invisible': ['|','|','|','|',('state', '=', 'drafted'),('state', '=', 'approved'),('state', '=', 'rejected'),('state', '=', 'done'),('show_button', '=', False)]}"
+                            string=" Approve Request" type="object"/>
+
+                    <button name="action_done" class="fa fa-check btn-success" context="{'bypass_check': True}"
+                            attrs="{'invisible': ['|','|','|',('state', '=', 'drafted'),('state', '=', 'pending_approval'),('state', '=', 'rejected'),('state', '=', 'done')]}"
+                            string=" Create Meeting Minutes" type="object"/>
+
+                    <button name="action_rejected" class="fa fa-times btn-danger" context="{'bypass_check': True}"
+                            attrs="{'invisible': ['|','|','|','|',('state', '=', 'drafted'),('state', '=', 'approved'),('state', '=', 'rejected'),('show_button', '=', False),('state', '=', 'done')]}"
+                            string=" Reject Request" type="object"/>
+
+                    <field name="state" widget="statusbar" nolabel="1"
+                           statusbar_visible="drafted,pending_approval,approved,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h4>
+                            <field name="ref" readonly="1"/>
+                        </h4>
+                        <h1>
+                            <label for="name" string="Meeting Title" class="oe_edit_only"/>
+                            <field name="title"/>
+                        </h1>
+                    </div>
+                    <group string="Meeting Information" name="meeting_info">
+                        <group>
+                            <field name="description"/>
+                            <field name="start_datetime"/>
+                            <field name="end_datetime"/>
+                            <field name="total_hours"/>
+                            <field name="prepared_by"/>
+                        </group>
+                        <group>
+                            <field name="coordinator"/>
+                            <field name="participants" widget="many2many_tags"/>
+                            <field name="venue"/>
+                            <field name="show_button" invisible="1"/>
+                        </group>
+                    </group>
+                    <group string="Venue Information" name="venue_info">
+                        <group>
+                            <field name="loc" force_save="1"/>
+                            <field name="cap" force_save="1"/>
+                        </group>
+                        <group>
+                            <field name="desc" force_save="1"/>
+                        </group>
+                    </group>
+                    <group string="Post-Meeting Information"
+                           attrs="{'invisible': [('state', 'not in', ['approved', 'done'])]}">
+                        <field name="discussion"
+                               attrs="{'invisible': [('state', 'not in', ['approved', 'done'])]}"
+                               placeholder="Add your details here..."
+                               options="{'collaborative':true, 'resizable':true, 'codeview':true}"/>
+                        <field name="decision"
+                               attrs="{'invisible': [('state', 'not in', ['approved', 'done'])]}"
+                               placeholder="Type here..."
+                               options="{'collaborative':true, 'resizable':true, 'codeview':true}"/>
+                    </group>
+                </sheet>
+
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+
+            </form>
+        </field>
+    </record>
+
+    <record id="action_meeting" model="ir.actions.act_window">
+        <field name="name">Meeting Request</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">meeting.request</field>
+        <field name="view_mode">tree,form,calendar,graph</field>
+        <!--        <field name="domain">[('is_converted_to_minutes', '=', False)]</field>-->
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create the first meeting request!
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_meeting_all"
+              name="All Meeting Request"
+              action="action_meeting"
+              parent="menu_meeting_master"
+              sequence="30"/>
+
+</odoo>
